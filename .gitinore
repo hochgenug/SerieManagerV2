@@ -1,0 +1,6 @@
+.vs/
+SerieManagerV2/bin/
+/SerieManagerV2/obj/*
+SerieManagerV2/obj/*
+SerieManagerV2/obj/**
+SerieManagerV2/obj/***
