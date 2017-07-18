@@ -94,23 +94,23 @@ namespace SerieManagerV2
         // pattern propre : Nom Serie S01E01 - Nom Episode [VOSTFR][720p].mkv
         private string cleanName(string name)
         {
-            string cleanedName = name.Replace('.', ' ').ToLower().Replace("subfrench", "vostfr");
-            Console.WriteLine("name" + name.ToString());
-            Console.WriteLine("cleanname" + cleanedName.ToString());
+            string cleanedName = name.Replace('.', ' ').Replace('-', ' ').ToLower().Replace("subfrench", "vostfr");
             cleanedName = cleanedName.First().ToString().ToUpper() + cleanedName.Substring(1);
 
             Regex myRegex = new Regex(@"^(?<serie>.*)s(?<saison>[\d]{2})e(?<episode>[\d]{2})(.*)(?<lang>(vostfr|french|multi))(.*)(?<quality>360p|720p|1080p)(.*)(?<extension>mkv|avi|mp4)$");
             GroupCollection groups = myRegex.Match(cleanedName.ToString()).Groups;
 
+            if (groups["quality"].ToString() == "")
+            {
+                 myRegex = new Regex(@"^(?<serie>.*)s(?<saison>[\d]{2})e(?<episode>[\d]{2})(.*)(?<lang>(vostfr|french|multi))(.*)(?<extension>mkv|avi|mp4)$");
+                 groups = myRegex.Match(cleanedName.ToString()).Groups;
+            }
+
             string goodFormat = "";
             goodFormat = cleanEpisode(groups, goodFormat);
-            Console.WriteLine("episode" + goodFormat.ToString());
             goodFormat = cleanSeason(groups, goodFormat);
-            Console.WriteLine("saison" + goodFormat.ToString()); ;
             goodFormat = cleanLang(groups, goodFormat);
-            Console.WriteLine("lang" + goodFormat.ToString());
             goodFormat = cleanQuality(name, groups, goodFormat);
-            Console.WriteLine("qualite" + goodFormat.ToString());
             goodFormat = cleanExtension(groups, goodFormat);
             cleanedName = goodFormat;
             if (goodFormat == "") {
@@ -149,11 +149,10 @@ namespace SerieManagerV2
         }
 
         private string cleanQuality(string name, GroupCollection groups, string goodFormat) {
-            Console.WriteLine(goodFormat.ToString());
             if (groups["quality"].ToString() != "") {
                 goodFormat = goodFormat + " [" + groups["quality"].ToString().ToLower() + "]";
                 goodFormat = goodFormat.Replace("] [", "][");
-            } else {
+            } else if (goodFormat != "") {
                 var mediaPlayer = new MediaPlayer();
                 var defaultQualityText = "Entrez la qualité. Ex : 720p";
                 var defaultQualityTitle = "Qualité manquante.";
@@ -163,16 +162,12 @@ namespace SerieManagerV2
                     defaultQualityText = mediaPlayer.NaturalVideoHeight.ToString() + "p";
                     defaultQualityTitle = "Confirmez la qualité détecté";
                 }
-                string test;
-                test = Interaction.InputBox("Definir la qualité pour le fichier : " + name, defaultQualityTitle, defaultQualityText);
-                // if(test != null)
-                //  {
-                goodFormat =  goodFormat.Replace(".", "[" + test +"].");
-                   // Console.WriteLine(goodFormat.ToString());
-             //   }
-             //   Console.WriteLine("zezeze");
-             //   Console.WriteLine(test);
-
+                string definedQlt;
+                definedQlt = Interaction.InputBox("Definir la qualité pour le fichier : " + name, defaultQualityTitle, defaultQualityText);
+                 if(definedQlt != null)
+                 {
+                    goodFormat =  goodFormat + "[" + definedQlt + "]";
+                 }
 
             }
             return goodFormat;

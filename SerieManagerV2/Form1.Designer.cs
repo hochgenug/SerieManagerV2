@@ -63,14 +63,14 @@
             this.label_rename_inputFolder.AutoSize = true;
             this.label_rename_inputFolder.Location = new System.Drawing.Point(3, 3);
             this.label_rename_inputFolder.Name = "label_rename_inputFolder";
-            this.label_rename_inputFolder.Size = new System.Drawing.Size(141, 13);
+            this.label_rename_inputFolder.Size = new System.Drawing.Size(188, 13);
             this.label_rename_inputFolder.TabIndex = 1;
-            this.label_rename_inputFolder.Text = "Répertoire : " + this.folderBrowserDialog_rename_inputFolder.SelectedPath;
+            this.label_rename_inputFolder.Text = "Répertoire : C:\\Users\\Maf\\Downloads";
             // 
             // tabControl1
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
